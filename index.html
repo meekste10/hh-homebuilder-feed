@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Holland Homes – Home Builder Feed</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <style>
+    :root {
+      --bg: #f5f7fa;
+      --card-bg: #ffffff;
+      --accent: #145a32;
+      --accent-soft: #e3f1e9;
+      --text-main: #1f2933;
+      --text-muted: #6b7280;
+      --border-soft: #e5e7eb;
+      --danger: #b91c1c;
+      --radius: 10px;
+      --shadow-soft: 0 8px 20px rgba(15, 23, 42, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+      background: var(--bg);
+      color: var(--text-main);
+    }
+
+    .app-shell {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 16px;
+    }
+
+    .app-card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      box-shadow: var(--shadow-soft);
+      padding: 16px 20px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .app-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .app-header-main {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .app-title-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .app-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+
+    .app-title-badge {
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .app-subline {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .app-meta {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .icon-button {
+      border-radius: 999px;
+      border: 1px solid var(--border-soft);
+      padding: 4px 8px;
+      font-size: 0.75rem;
+      background: #ffffff;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+    }
+
+    .icon-button span {
+      font-size: 0.9em;
+    }
+
+    .icon-button:hover {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+    }
+
+    .controls-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .control-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    select,
+    input[type="search"] {
+      border-radius: 999px;
+      border: 1px solid var(--border-soft);
+      padding: 6px 10px;
+      font-size: 0.8rem;
+      background: #ffffff;
+      min-width: 120px;
+      outline: none;
+    }
+
+    select:focus,
+    input[type="search"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(20, 90, 50, 0.15);
+    }
+
+    .articles {
+      margin-top: 4px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-height: 70vh;
+      overflow: auto;
+      padding-right: 4px;
+    }
+
+    .article-card {
+      border-radius: var(--radius);
+      border: 1px solid var(--border-soft);
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      background: #ffffff;
+      transition: transform 0.08s ease, box-shadow 0.08s ease,
+        border-color 0.08s ease;
+    }
+
+    .article-card:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 14px rgba(15, 23, 42, 0.06);
+      border-color: rgba(20, 90, 50, 0.3);
+    }
+
+    .article-top {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 4px;
+    }
+
+    .article-source {
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      background: var(--accent-soft);
+      color: var(--accent);
+    }
+
+    .badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: var(--accent);
+    }
+
+    .article-title {
+      font-size: 0.92rem;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    .article-title a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .article-title a:hover {
+      text-decoration: underline;
+    }
+
+    .article-meta {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .article-meta-dot {
+      width: 3px;
+      height: 3px;
+      border-radius: 999px;
+      background: #d1d5db;
+    }
+
+    .article-snippet {
+      font-size: 0.8rem;
+      color: #374151;
+    }
+
+    .article-actions {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 4px;
+    }
+
+    .btn-link {
+      border-radius: 999px;
+      border: 1px solid var(--accent);
+      padding: 4px 10px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--accent);
+      background: #ffffff;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .btn-link:hover {
+      background: var(--accent-soft);
+    }
+
+    .pill {
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: #e5e7eb;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+
+    .status-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .status-error {
+      color: var(--danger);
+      font-weight: 500;
+    }
+
+    .skeleton {
+      border-radius: var(--radius);
+      background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 37%, #f3f4f6 63%);
+      background-size: 400% 100%;
+      animation: shimmer 1.4s ease infinite;
+      height: 64px;
+    }
+
+    @keyframes shimmer {
+      0% {
+        background-position: -400px 0;
+      }
+      100% {
+        background-position: 400px 0;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .app-card {
+        padding: 14px 14px;
+      }
+      .articles {
+        max-height: none;
+      }
+      .app-header {
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <div class="app-card">
+      <header class="app-header">
+        <div class="app-header-main">
+          <div class="app-title-row">
+            <div class="app-title">Home Builder Feed</div>
+            <span class="app-title-badge">Purpose &gt; People &gt; Process &gt; Product</span>
+          </div>
+          <div class="app-subline">
+            Curated housing, construction, and leadership content for the Holland Homes team.
+          </div>
+          <div class="app-meta" id="last-updated">
+            Loading latest posts…
+          </div>
+        </div>
+        <div class="header-actions">
+          <button class="icon-button" id="refresh-btn" type="button" title="Refresh feeds">
+            <span aria-hidden="true">⟳</span>
+            <span>Refresh</span>
+          </button>
+        </div>
+      </header>
+
+      <div class="controls-row">
+        <div class="control-group">
+          <span>Source</span>
+          <select id="source-filter">
+            <option value="all">All</option>
+          </select>
+        </div>
+        <div class="control-group">
+          <span>Type</span>
+          <select id="type-filter">
+            <option value="all">All</option>
+            <option value="Home Building News">Home Building News</option>
+            <option value="Industry & Market">Industry &amp; Market</option>
+            <option value="Field / Structural">Field / Structural</option>
+            <option value="Payment & Risk">Payment &amp; Risk</option>
+            <option value="Leadership / Mindset">Leadership / Mindset</option>
+          </select>
+        </div>
+        <div class="control-group">
+          <span>Search</span>
+          <input
+            type="search"
+            id="search-input"
+            placeholder="Titles &amp; snippets…"
+          />
+        </div>
+      </div>
+
+      <div class="status-bar">
+        <div id="status-text">Fetching feeds…</div>
+        <div>
+          <span class="pill" id="count-pill">0 items</span>
+        </div>
+      </div>
+
+      <main class="articles" id="articles">
+        <div class="skeleton"></div>
+        <div class="skeleton"></div>
+        <div class="skeleton"></div>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    /***************
+     * CONFIG
+     ***************/
+    const FEEDS = [
+      {
+        id: "nahbnow",
+        label: "NAHBNow – Housing & Policy",
+        url: "http://feeds.feedburner.com/NAHBNow",
+        defaultType: "Home Building News"
+      },
+      {
+        id: "constructiondive",
+        label: "Construction Dive – News",
+        url: "https://www.constructiondive.com/feeds/news",
+        defaultType: "Industry & Market"
+      },
+      {
+        id: "simpson",
+        label: "Simpson Strong-Tie – Building Strong",
+        url: "https://blog.strongtie.com/feed",
+        defaultType: "Field / Structural"
+      },
+      {
+        id: "levelset",
+        label: "Levelset – Payment & Lien Insights",
+        url: "https://www.levelset.com/feed",
+        defaultType: "Payment & Risk"
+      },
+      {
+        id: "builders-ladder",
+        label: "The Builder\u2019s Ladder Podcast",
+        url: "https://www.omnycontent.com/d/playlist/a7c1aad5-1e2f-463e-be47-ac7100013784/0d1f41eb-b380-4ab0-bf35-ac740183bba7/1529fd6c-f448-4079-8612-ac7f00455883/podcast.rss",
+        defaultType: "Leadership / Mindset"
+      }
+    ];
+
+    // rss2json with your API key
+    const RSS_PROXY =
+      "https://api.rss2json.com/v1/api.json?api_key=ntizpxzcpgqefnsk0z9bnqxtbz5cica9bberpqbc&rss_url=";
+
+    let allItems = [];
+    let filteredItems = [];
+    let loading = true;
+    let errorMessages = [];
+
+    const articlesEl = document.getElementById("articles");
+    const sourceFilterEl = document.getElementById("source-filter");
+    const typeFilterEl = document.getElementById("type-filter");
+    const searchInputEl = document.getElementById("search-input");
+    const statusTextEl = document.getElementById("status-text");
+    const countPillEl = document.getElementById("count-pill");
+    const lastUpdatedEl = document.getElementById("last-updated");
+    const refreshBtnEl = document.getElementById("refresh-btn");
+
+    const isWebOrigin =
+      window.location.href.startsWith("http://") ||
+      window.location.href.startsWith("https://");
+
+    /***************
+     * HELPERS
+     ***************/
+    function formatDate(dateStr) {
+      if (!dateStr) return "";
+      const d = new Date(dateStr);
+      if (isNaN(d.getTime())) return "";
+      return d.toLocaleDateString(undefined, {
+        month: "short",
+        day: "numeric",
+        year: "numeric"
+      });
+    }
+
+    function timeAgo(dateStr) {
+      if (!dateStr) return "";
+      const d = new Date(dateStr);
+      if (isNaN(d.getTime())) return "";
+      const now = new Date();
+      const diffMs = now - d;
+      const sec = Math.floor(diffMs / 1000);
+      const min = Math.floor(sec / 60);
+      const hr = Math.floor(min / 60);
+      const day = Math.floor(hr / 24);
+
+      if (day > 7) return "";
+      if (day >= 1) return day + (day === 1 ? " day ago" : " days ago");
+      if (hr >= 1) return hr + (hr === 1 ? " hour ago" : " hours ago");
+      if (min >= 1) return min + (min === 1 ? " min ago" : " mins ago");
+      return "Just now";
+    }
+
+    function sanitizeText(html) {
+      const div = document.createElement("div");
+      div.innerHTML = html;
+      return (div.textContent || div.innerText || "").trim();
+    }
+
+    function updateLastUpdated() {
+      const now = new Date();
+      lastUpdatedEl.textContent =
+        "Updated " +
+        now.toLocaleTimeString(undefined, {
+          hour: "numeric",
+          minute: "2-digit"
+        });
+    }
+
+    function buildSourceFilterOptions() {
+      FEEDS.forEach((feed) => {
+        const opt = document.createElement("option");
+        opt.value = feed.id;
+        opt.textContent = feed.label;
+        sourceFilterEl.appendChild(opt);
+      });
+    }
+
+    /***************
+     * FETCH + NORMALIZE
+     ***************/
+    async function fetchFeed(feed) {
+      try {
+        const url = RSS_PROXY + encodeURIComponent(feed.url);
+        const res = await fetch(url);
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        const data = await res.json();
+
+        if (data.status && data.status !== "ok") {
+          throw new Error(data.message || "Unknown API error");
+        }
+
+        const items = (data.items || []).map((item) => {
+          const cleanDesc = sanitizeText(item.description || item.content || "");
+          return {
+            id: feed.id + "::" + (item.guid || item.link || item.title),
+            feedId: feed.id,
+            feedLabel: feed.label,
+            type: feed.defaultType,
+            title: item.title || "(No title)",
+            link: item.link || "#",
+            date: item.pubDate || item.pubdate || item.date || "",
+            snippet:
+              cleanDesc.slice(0, 260) +
+              (cleanDesc.length > 260 ? "…" : "")
+          };
+        });
+
+        return items;
+      } catch (err) {
+        console.error("Error fetching feed", feed.label, err);
+        errorMessages.push(feed.label + ": " + err.message);
+        return [];
+      }
+    }
+
+    async function loadAllFeeds() {
+      if (!isWebOrigin) {
+        loading = false;
+        statusTextEl.innerHTML =
+          "<span class='status-error'>Feeds blocked:</span> This preview is being opened directly from a file (edge:// or file://). For security reasons, browsers do not allow local files to load live RSS data. Host this file on SharePoint, an intranet site, or any https:// web address to see live content.";
+        renderEmptyState();
+        return;
+      }
+
+      loading = true;
+      errorMessages = [];
+      statusTextEl.textContent = "Fetching feeds…";
+      articlesEl.innerHTML = "";
+      for (let i = 0; i < 3; i++) {
+        const sk = document.createElement("div");
+        sk.className = "skeleton";
+        articlesEl.appendChild(sk);
+      }
+
+      try {
+        const results = await Promise.all(FEEDS.map((f) => fetchFeed(f)));
+        allItems = results.flat();
+
+        // Sort newest first
+        allItems.sort((a, b) => {
+          const da = new Date(a.date).getTime() || 0;
+          const db = new Date(b.date).getTime() || 0;
+          return db - da;
+        });
+
+        loading = false;
+        applyFilters();
+        updateLastUpdated();
+
+        if (errorMessages.length) {
+          statusTextEl.innerHTML =
+            '<span class="status-error">Some feeds failed:</span> ' +
+            errorMessages.join(" · ");
+        } else {
+          statusTextEl.textContent = "All feeds loaded successfully.";
+        }
+      } catch (e) {
+        loading = false;
+        console.error(e);
+        statusTextEl.innerHTML =
+          '<span class="status-error">Error:</span> Unable to load feeds.';
+        renderEmptyState();
+      }
+    }
+
+    /***************
+     * FILTERING + RENDER
+     ***************/
+    function applyFilters() {
+      const sourceVal = sourceFilterEl.value;
+      const typeVal = typeFilterEl.value;
+      const searchVal = (searchInputEl.value || "").toLowerCase();
+
+      filteredItems = allItems.filter((item) => {
+        if (sourceVal !== "all" && item.feedId !== sourceVal) return false;
+        if (typeVal !== "all" && item.type !== typeVal) return false;
+
+        if (searchVal) {
+          const haystack =
+            (item.title || "").toLowerCase() +
+            " " +
+            (item.snippet || "").toLowerCase();
+          if (!haystack.includes(searchVal)) return false;
+        }
+        return true;
+      });
+
+      renderArticles();
+    }
+
+    function renderEmptyState() {
+      articlesEl.innerHTML = "";
+      const card = document.createElement("div");
+      card.className = "article-card";
+      card.innerHTML =
+        "<strong>Preview mode only.</strong><div class='article-snippet'>Layout and filters are ready. Move this file to a web address (SharePoint, intranet, or any https:// host) and the live industry content will populate automatically.</div>";
+      articlesEl.appendChild(card);
+      countPillEl.textContent = "0 items";
+    }
+
+    function renderArticles() {
+      articlesEl.innerHTML = "";
+
+      if (loading) {
+        for (let i = 0; i < 3; i++) {
+          const sk = document.createElement("div");
+          sk.className = "skeleton";
+          articlesEl.appendChild(sk);
+        }
+        return;
+      }
+
+      if (!filteredItems.length) {
+        const empty = document.createElement("div");
+        empty.className = "article-card";
+        empty.innerHTML =
+          "<strong>No results.</strong><div class='article-snippet'>Try adjusting filters or search keywords.</div>";
+        articlesEl.appendChild(empty);
+        countPillEl.textContent = "0 items";
+        return;
+      }
+
+      filteredItems.forEach((item) => {
+        const card = document.createElement("article");
+        card.className = "article-card";
+
+        const top = document.createElement("div");
+        top.className = "article-top";
+
+        const source = document.createElement("div");
+        source.className = "article-source";
+        source.textContent = item.feedLabel;
+
+        const badge = document.createElement("div");
+        badge.className = "badge";
+        badge.innerHTML =
+          '<span class="badge-dot"></span><span>' + item.type + "</span>";
+
+        top.appendChild(source);
+        top.appendChild(badge);
+
+        const title = document.createElement("h3");
+        title.className = "article-title";
+        const link = document.createElement("a");
+        link.href = item.link;
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        link.textContent = item.title;
+        title.appendChild(link);
+
+        const meta = document.createElement("div");
+        meta.className = "article-meta";
+        const dateStr = formatDate(item.date);
+        const agoStr = timeAgo(item.date);
+        if (dateStr) {
+          const dateSpan = document.createElement("span");
+          dateSpan.textContent = dateStr;
+          meta.appendChild(dateSpan);
+        }
+        if (dateStr && agoStr) {
+          const dot = document.createElement("div");
+          dot.className = "article-meta-dot";
+          meta.appendChild(dot);
+        }
+        if (agoStr) {
+          const agoSpan = document.createElement("span");
+          agoSpan.textContent = agoStr;
+          meta.appendChild(agoSpan);
+        }
+
+        const snippet = document.createElement("div");
+        snippet.className = "article-snippet";
+        snippet.textContent = item.snippet;
+
+        const actions = document.createElement("div");
+        actions.className = "article-actions";
+        const btn = document.createElement("button");
+        btn.className = "btn-link";
+        btn.type = "button";
+        btn.innerHTML = 'Open <span aria-hidden="true">↗</span>';
+        btn.addEventListener("click", () => {
+          window.open(item.link, "_blank", "noopener");
+        });
+        actions.appendChild(btn);
+
+        card.appendChild(top);
+        card.appendChild(title);
+        if (meta.childNodes.length) card.appendChild(meta);
+        card.appendChild(snippet);
+        card.appendChild(actions);
+
+        articlesEl.appendChild(card);
+      });
+
+      countPillEl.textContent = filteredItems.length + " items";
+    }
+
+    /***************
+     * EVENTS
+     ***************/
+    sourceFilterEl.addEventListener("change", applyFilters);
+    typeFilterEl.addEventListener("change", applyFilters);
+    searchInputEl.addEventListener("input", applyFilters);
+    refreshBtnEl.addEventListener("click", () => {
+      loadAllFeeds();
+    });
+
+    /***************
+     * INIT
+     ***************/
+    buildSourceFilterOptions();
+    loadAllFeeds();
+  </script>
+</body>
+</html>
