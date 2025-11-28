@@ -2,752 +2,852 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Holland Homes – Home Builder Feed</title>
+  <title>Home Builder Feed – Audio + News</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-
   <style>
     :root {
-      --bg: #f5f7fa;
+      --bg: #f4f5f7;
       --card-bg: #ffffff;
-      --accent: #145a32;
-      --accent-soft: #e3f1e9;
-      --text-main: #1f2933;
+      --accent: #1c7c54;
+      --accent-soft: #e4f3eb;
+      --accent-soft-2: #f2f7ff;
+      --accent-text: #0b3d2c;
+      --danger: #b00020;
+      --border-subtle: #e0e4ea;
+      --text-main: #111827;
       --text-muted: #6b7280;
-      --border-soft: #e5e7eb;
-      --danger: #b91c1c;
-      --radius: 10px;
-      --shadow-soft: 0 8px 20px rgba(15, 23, 42, 0.08);
+      --pill-bg: #eef2ff;
+      --pill-text: #4338ca;
+      --radius-lg: 18px;
+      --radius-pill: 999px;
+      --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.18);
+      --shadow-subtle: 0 1px 3px rgba(15, 23, 42, 0.08);
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
-      padding: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-        sans-serif;
-      background: var(--bg);
+      padding: 24px 16px 40px;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #f7fafc 0, #eef2ff 40%, #e5f5ee 100%);
       color: var(--text-main);
+      display: flex;
+      justify-content: center;
     }
 
     .app-shell {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 16px;
+      width: 100%;
+      max-width: 840px;
     }
 
-    .app-card {
-      background: var(--card-bg);
-      border-radius: 16px;
+    .card {
+      background: linear-gradient(145deg, #ffffff, #f7fafc);
+      border-radius: var(--radius-lg);
       box-shadow: var(--shadow-soft);
-      padding: 16px 20px 18px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
+      padding: 22px 20px 20px;
     }
 
-    .app-header {
+    .card-header {
       display: flex;
-      flex-wrap: wrap;
-      align-items: center;
       justify-content: space-between;
-      gap: 10px;
+      gap: 8px;
+      align-items: flex-start;
+      margin-bottom: 16px;
     }
 
-    .app-header-main {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
+    .title-block h1 {
+      font-size: 1.4rem;
+      margin: 0;
+      letter-spacing: -0.03em;
     }
 
-    .app-title-row {
+    .subtitle {
+      margin-top: 2px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
       display: flex;
-      flex-wrap: wrap;
       align-items: center;
       gap: 8px;
+      flex-wrap: wrap;
     }
 
-    .app-title {
-      font-size: 1.1rem;
-      font-weight: 700;
-    }
-
-    .app-title-badge {
-      padding: 3px 8px;
-      border-radius: 999px;
+    .updated-pill {
       background: var(--accent-soft);
-      color: var(--accent);
+      color: var(--accent-text);
+      border-radius: var(--radius-pill);
+      padding: 4px 10px;
       font-size: 0.7rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    .app-subline {
-      font-size: 0.78rem;
-      color: var(--text-muted);
-    }
-
-    .app-meta {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-    }
-
-    .header-actions {
-      display: flex;
+      display: inline-flex;
       align-items: center;
       gap: 6px;
     }
 
-    .icon-button {
-      border-radius: 999px;
-      border: 1px solid var(--border-soft);
-      padding: 4px 8px;
-      font-size: 0.75rem;
-      background: #ffffff;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      cursor: pointer;
+    .badge-ethos {
+      background: #111827;
+      color: #f9fafb;
+      border-radius: var(--radius-pill);
+      padding: 4px 10px;
+      font-size: 0.7rem;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      white-space: nowrap;
     }
 
-    .icon-button span {
-      font-size: 0.9em;
+    .badge-ethos span {
+      opacity: 0.78;
     }
 
-    .icon-button:hover {
-      border-color: var(--accent);
-      background: var(--accent-soft);
+    .badge-ethos strong {
+      font-weight: 600;
     }
 
     .controls-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+      gap: 12px;
+      margin-bottom: 10px;
+      align-items: center;
     }
 
-    .control-group {
+    @media (max-width: 640px) {
+      body { padding-inline: 12px; }
+      .controls-row {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .subtitle { flex-direction: column; align-items: flex-start; }
+    }
+
+    .field-group {
       display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 0.8rem;
+      flex-direction: column;
+      gap: 4px;
+      font-size: 0.76rem;
       color: var(--text-muted);
     }
 
-    select,
-    input[type="search"] {
-      border-radius: 999px;
-      border: 1px solid var(--border-soft);
-      padding: 6px 10px;
-      font-size: 0.8rem;
-      background: #ffffff;
-      min-width: 120px;
-      outline: none;
-    }
-
-    select:focus,
-    input[type="search"]:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 1px rgba(20, 90, 50, 0.15);
-    }
-
-    .articles {
-      margin-top: 4px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      max-height: 70vh;
-      overflow: auto;
-      padding-right: 4px;
-    }
-
-    .article-card {
-      border-radius: var(--radius);
-      border: 1px solid var(--border-soft);
-      padding: 12px 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      background: #ffffff;
-      transition: transform 0.08s ease, box-shadow 0.08s ease,
-        border-color 0.08s ease;
-    }
-
-    .article-card:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 6px 14px rgba(15, 23, 42, 0.06);
-      border-color: rgba(20, 90, 50, 0.3);
-    }
-
-    .article-top {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 4px;
-    }
-
-    .article-source {
-      font-size: 0.72rem;
+    .field-group label {
       font-weight: 600;
+      letter-spacing: 0.03em;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--text-muted);
+      font-size: 0.68rem;
     }
 
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      padding: 2px 8px;
+    select, input[type="search"] {
       border-radius: 999px;
+      border: 1px solid var(--border-subtle);
+      padding: 7px 11px;
+      font-size: 0.8rem;
+      outline: none;
+      background: #ffffff;
+      box-shadow: var(--shadow-subtle);
+      appearance: none;
+      width: 100%;
+    }
+
+    select:focus, input[type="search"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(28,124,84,0.08), var(--shadow-subtle);
+    }
+
+    .select-wrapper {
+      position: relative;
+    }
+
+    .select-wrapper::after {
+      content: "▾";
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
       font-size: 0.7rem;
-      font-weight: 600;
-      background: var(--accent-soft);
-      color: var(--accent);
-    }
-
-    .badge-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 999px;
-      background: var(--accent);
-    }
-
-    .article-title {
-      font-size: 0.92rem;
-      font-weight: 600;
-      margin: 0;
-    }
-
-    .article-title a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    .article-title a:hover {
-      text-decoration: underline;
-    }
-
-    .article-meta {
-      font-size: 0.75rem;
       color: var(--text-muted);
+      pointer-events: none;
+    }
+
+    .filters-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr);
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    @media (max-width: 640px) {
+      .filters-row {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .search-input {
+      position: relative;
+    }
+
+    .search-input input {
+      padding-left: 28px;
+    }
+
+    .search-input svg {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 13px;
+      height: 13px;
+      opacity: 0.5;
+    }
+
+    .badges-row {
       display: flex;
       gap: 6px;
       flex-wrap: wrap;
+      margin-bottom: 10px;
       align-items: center;
     }
 
-    .article-meta-dot {
-      width: 3px;
-      height: 3px;
-      border-radius: 999px;
-      background: #d1d5db;
-    }
-
-    .article-snippet {
-      font-size: 0.8rem;
-      color: #374151;
-    }
-
-    .article-actions {
-      display: flex;
-      justify-content: flex-end;
-      margin-top: 4px;
-    }
-
-    .btn-link {
-      border-radius: 999px;
-      border: 1px solid var(--accent);
-      padding: 4px 10px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      color: var(--accent);
-      background: #ffffff;
-      cursor: pointer;
+    .badge-soft {
+      border-radius: var(--radius-pill);
+      background: var(--accent-soft-2);
+      color: #1e293b;
+      font-size: 0.7rem;
+      padding: 4px 9px;
       display: inline-flex;
       align-items: center;
-      gap: 4px;
+      gap: 5px;
+      white-space: nowrap;
+      cursor: pointer;
+      border: 1px solid transparent;
     }
 
-    .btn-link:hover {
-      background: var(--accent-soft);
+    .badge-soft span {
+      font-size: 0.8em;
+      opacity: 0.7;
     }
 
-    .pill {
-      padding: 2px 8px;
-      border-radius: 999px;
-      background: #e5e7eb;
-      font-size: 0.7rem;
-      color: var(--text-muted);
-    }
-
-    .status-bar {
+    .status-row {
+      margin-bottom: 8px;
+      font-size: 0.76rem;
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      margin-top: 4px;
       gap: 8px;
+      align-items: center;
+      color: var(--text-muted);
       flex-wrap: wrap;
     }
 
-    .status-error {
+    .status-row strong {
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .status-row .failed {
       color: var(--danger);
       font-weight: 500;
     }
 
-    .skeleton {
-      border-radius: var(--radius);
-      background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 37%, #f3f4f6 63%);
-      background-size: 400% 100%;
-      animation: shimmer 1.4s ease infinite;
-      height: 64px;
+    .status-row button {
+      border-radius: 999px;
+      border: none;
+      padding: 4px 10px;
+      font-size: 0.72rem;
+      background: #0f172a;
+      color: #f9fafb;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
     }
 
-    @keyframes shimmer {
-      0% {
-        background-position: -400px 0;
-      }
-      100% {
-        background-position: 400px 0;
-      }
+    .status-row button span {
+      font-size: 0.9em;
+      opacity: 0.7;
     }
 
-    @media (max-width: 640px) {
-      .app-card {
-        padding: 14px 14px;
-      }
-      .articles {
-        max-height: none;
-      }
-      .app-header {
-        align-items: flex-start;
-      }
+    .status-row button:hover {
+      background: #020617;
     }
+
+    .list-meta-pill {
+      border-radius: var(--radius-pill);
+      background: #e5e7eb;
+      padding: 3px 8px;
+      font-size: 0.68rem;
+      color: #374151;
+    }
+
+    .items-wrapper {
+      border-radius: 18px;
+      background: #f9fafb;
+      border: 1px solid var(--border-subtle);
+      padding: 10px 10px 8px;
+      max-height: 62vh;
+      overflow: auto;
+    }
+
+    .item-card {
+      padding: 9px 7px 8px;
+      border-radius: 14px;
+      border-bottom: 1px solid rgba(148,163,184,0.28);
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 4px;
+    }
+
+    .item-card:last-child {
+      border-bottom-color: transparent;
+    }
+
+    .item-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 6px;
+      align-items: flex-start;
+    }
+
+    .item-title {
+      font-size: 0.88rem;
+      font-weight: 600;
+      margin: 0;
+      line-height: 1.25;
+    }
+
+    .item-title a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .item-title a:hover {
+      text-decoration: underline;
+    }
+
+    .item-meta {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .pill-small {
+      border-radius: var(--radius-pill);
+      padding: 2px 7px;
+      font-size: 0.64rem;
+      background: #e5e7eb;
+      color: #374151;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .pill-small.podcast {
+      background: #eef2ff;
+      color: #3730a3;
+    }
+
+    .pill-small.audio-platform {
+      background: #e0f2fe;
+      color: #075985;
+    }
+
+    .item-snippet {
+      font-size: 0.78rem;
+      color: #4b5563;
+      margin-top: 1px;
+      line-height: 1.3;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 30px 16px 10px;
+      color: var(--text-muted);
+      font-size: 0.86rem;
+    }
+
+    .empty-state strong {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--text-main);
+    }
+
+    .spinner {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      border: 2px solid rgba(148,163,184,0.6);
+      border-top-color: #111827;
+      animation: spin 0.7s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .hidden { display: none !important; }
   </style>
 </head>
 <body>
-  <div class="app-shell">
-    <div class="app-card">
-      <header class="app-header">
-        <div class="app-header-main">
-          <div class="app-title-row">
-            <div class="app-title">Home Builder Feed</div>
-            <span class="app-title-badge">Purpose &gt; People &gt; Process &gt; Product</span>
-          </div>
-          <div class="app-subline">
-            Curated housing, construction, and leadership content for the Holland Homes team.
-          </div>
-          <div class="app-meta" id="last-updated">
-            Loading latest posts…
+  <main class="app-shell">
+    <section class="card">
+      <header class="card-header">
+        <div class="title-block">
+          <h1>Home Builder Feed</h1>
+          <div class="subtitle">
+            <div id="updatedDisplay" class="updated-pill">
+              <span class="dot" style="width:6px;height:6px;border-radius:999px;background:#059669;display:inline-block;"></span>
+              <span>Loading…</span>
+            </div>
           </div>
         </div>
-        <div class="header-actions">
-          <button class="icon-button" id="refresh-btn" type="button" title="Refresh feeds">
-            <span aria-hidden="true">⟳</span>
-            <span>Refresh</span>
-          </button>
+        <div class="badge-ethos">
+          <span>PURPOSE &gt; PEOPLE &gt; PROCESS &gt;</span> <strong>PRODUCT</strong>
         </div>
       </header>
 
       <div class="controls-row">
-        <div class="control-group">
-          <span>Source</span>
-          <select id="source-filter">
-            <option value="all">All</option>
-          </select>
+        <div class="field-group">
+          <label for="sourceSelect">Source</label>
+          <div class="select-wrapper">
+            <select id="sourceSelect"></select>
+          </div>
         </div>
-        <div class="control-group">
-          <span>Type</span>
-          <select id="type-filter">
-            <option value="all">All</option>
-            <option value="Home Building News">Home Building News</option>
-            <option value="Industry & Market">Industry &amp; Market</option>
-            <option value="Field / Structural">Field / Structural</option>
-            <option value="Payment & Risk">Payment &amp; Risk</option>
-            <option value="Leadership / Mindset">Leadership / Mindset</option>
-          </select>
-        </div>
-        <div class="control-group">
-          <span>Search</span>
-          <input
-            type="search"
-            id="search-input"
-            placeholder="Titles &amp; snippets…"
-          />
+        <div class="field-group">
+          <label for="typeSelect">Type</label>
+          <div class="select-wrapper">
+            <select id="typeSelect">
+              <option value="all">All</option>
+              <option value="Home Building News">Home Building News</option>
+              <option value="Industry &amp; Market">Industry &amp; Market</option>
+              <option value="Field / Structural">Field / Structural</option>
+              <option value="Payment &amp; Risk">Payment &amp; Risk</option>
+              <option value="Leadership / Mindset">Leadership / Mindset</option>
+              <option value="Community / Sustainability">Community / Sustainability</option>
+              <option value="Marketing &amp; Sales">Marketing &amp; Sales</option>
+              <option value="Interior Design">Interior Design</option>
+            </select>
+          </div>
         </div>
       </div>
 
-      <div class="status-bar">
-        <div id="status-text">Fetching feeds…</div>
+      <div class="filters-row">
+        <div class="field-group">
+          <label for="searchInput">Search</label>
+          <div class="search-input">
+            <input id="searchInput" type="search" placeholder="Titles, snippets, guests, topics…" />
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path fill="currentColor" d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79L19 20.5 20.5 19l-5-5zm-6 0C8.01 14 6 11.99 6 9.5S8.01 5 10.5 5 15 7.01 15 9.5 12.99 14 10.5 14z"></path>
+            </svg>
+          </div>
+        </div>
+        <div class="field-group">
+          <label>Quick view</label>
+          <div class="badges-row">
+            <span id="badgeArticles" class="badge-soft">
+              <span>●</span> Articles
+            </span>
+            <span id="badgePodcasts" class="badge-soft">
+              <span>🎧</span> Podcasts &amp; Audio
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="status-row">
         <div>
-          <span class="pill" id="count-pill">0 items</span>
+          <span class="list-meta-pill">
+            <strong id="countDisplay">0</strong> items
+          </span>
+          <span id="failedDisplay" class="failed hidden"></span>
         </div>
+        <button id="refreshButton" type="button">
+          <div class="spinner hidden" id="refreshSpinner"></div>
+          <span>Refresh feeds</span>
+        </button>
       </div>
 
-      <main class="articles" id="articles">
-        <div class="skeleton"></div>
-        <div class="skeleton"></div>
-        <div class="skeleton"></div>
-      </main>
-    </div>
-  </div>
+      <div class="items-wrapper" id="itemsWrapper">
+        <div class="empty-state" id="emptyState">
+          <strong>No results.</strong>
+          Try another source, broaden the type, or clear your search.
+        </div>
+      </div>
+    </section>
+  </main>
 
   <script>
-    /***************
-     * CONFIG
-     ***************/
+    // ------------------------
+    // CONFIG
+    // ------------------------
+
+    // Your rss2json API key
+    const RSS2JSON_API_KEY = "ntizpxzcpgqefnsk0z9bnqxtbz5cica9bberpqbc";
+    const RSS_PROXY_BASE = "https://api.rss2json.com/v1/api.json?";
+
     const FEEDS = [
-      {
-        id: "nahbnow",
-        label: "NAHBNow – Housing & Policy",
-        url: "http://feeds.feedburner.com/NAHBNow",
-        defaultType: "Home Building News"
-      },
-      {
-        id: "constructiondive",
-        label: "Construction Dive – News",
-        url: "https://www.constructiondive.com/feeds/news",
-        defaultType: "Industry & Market"
-      },
-      {
-        id: "simpson",
-        label: "Simpson Strong-Tie – Building Strong",
-        url: "https://blog.strongtie.com/feed",
-        defaultType: "Field / Structural"
-      },
-      {
-        id: "levelset",
-        label: "Levelset – Payment & Lien Insights",
-        url: "https://www.levelset.com/feed",
-        defaultType: "Payment & Risk"
-      },
-      {
-        id: "builders-ladder",
-        label: "The Builder\u2019s Ladder Podcast",
-        url: "https://www.omnycontent.com/d/playlist/a7c1aad5-1e2f-463e-be47-ac7100013784/0d1f41eb-b380-4ab0-bf35-ac740183bba7/1529fd6c-f448-4079-8612-ac7f00455883/podcast.rss",
-        defaultType: "Leadership / Mindset"
-      }
+      // --- ARTICLES: Industry & Building Science ---
+      { id: "constructiondive", label: "Construction Dive – News", url: "https://www.constructiondive.com/feeds/news/", type: "Industry & Market", kind: "article" },
+      { id: "levelset", label: "Levelset – Payment & Lien Insights", url: "https://www.levelset.com/feed/", type: "Payment & Risk", kind: "article" },
+      { id: "probuilder", label: "Pro Builder Magazine", url: "https://www.probuilder.com/rss.xml", type: "Home Building News", kind: "article" },
+      { id: "simpsonstrongtie", label: "Simpson Strong-Tie – Building Strong", url: "https://blog.strongtie.com/feed/", type: "Field / Structural", kind: "article" },
+      { id: "buildermag", label: "Builder Magazine", url: "https://www.builderonline.com/rss", type: "Industry & Market", kind: "article" },
+      { id: "jlc", label: "Journal of Light Construction (JLC)", url: "https://www.jlconline.com/rss", type: "Field / Structural", kind: "article" },
+
+      // --- PODCASTS: Homebuilding & Construction ---
+      { id: "homebuildinghero", label: "Home Building Hero Podcast", url: "https://anchor.fm/s/7eefadc/podcast/rss", type: "Leadership / Mindset", kind: "podcast" },
+      { id: "behindyourback", label: "Behind Your Back Podcast", url: "https://behindyourbackpodcast.libsyn.com/rss", type: "Leadership / Mindset", kind: "podcast" },
+      { id: "buildingsustainably", label: "Building Sustainably – Tim O’Brien Homes", url: "https://feeds.buzzsprout.com/1141247.rss", type: "Community / Sustainability", kind: "podcast" },
+      { id: "finehomebuilding", label: "Fine Homebuilding Podcast", url: "https://www.finehomebuilding.com/feed/podcast", type: "Field / Structural", kind: "podcast" },
+      { id: "constructionleaders", label: "Construction Leadership Podcast (CMAA)", url: "https://cmaa.podbean.com/feed.xml", type: "Leadership / Mindset", kind: "podcast" },
+      { id: "buildingcode", label: "The Building Code – Buildertrend", url: "https://feeds.simplecast.com/9r2G7vQF", type: "Industry & Market", kind: "podcast" },
+
+      // --- PODCASTS: Marketing & Sales ---
+      { id: "hbmarketing", label: "Home Builder Digital Marketing Podcast", url: "https://feeds.castos.com/5o2zw", type: "Marketing & Sales", kind: "podcast" },
+      { id: "buildergrowth", label: "Builder Marketing Growth Show", url: "https://www.buildermarketinggrowthshow.com/feed", type: "Marketing & Sales", kind: "podcast" },
+
+      // --- PODCASTS: Interior Design ---
+      { id: "interiordesignbiz", label: "Interior Design Business Podcast", url: "https://feed.podbean.com/thestartingdesigner/feed.xml", type: "Interior Design", kind: "podcast" },
+      { id: "interiordesignmag", label: "Interior Design Magazine Podcast", url: "https://rss.art19.com/interior-design-magazine-podcast", type: "Interior Design", kind: "podcast" },
+
+      // --- PODCASTS: HR & Leadership ---
+      { id: "hbrideacast", label: "HBR IdeaCast", url: "https://feeds.megaphone.fm/hbrideacast", type: "Leadership / Mindset", kind: "podcast" },
+      { id: "dailystoic", label: "The Daily Stoic", url: "https://feeds.megaphone.fm/dailystoic", type: "Leadership / Mindset", kind: "podcast" }
     ];
 
-    // rss2json with your API key
-    const RSS_PROXY =
-      "https://api.rss2json.com/v1/api.json?api_key=ntizpxzcpgqefnsk0z9bnqxtbz5cica9bberpqbc&rss_url=";
-
+    // ------------------------
+    // STATE
+    // ------------------------
     let allItems = [];
-    let filteredItems = [];
-    let loading = true;
-    let errorMessages = [];
+    let failedFeeds = [];
+    let isLoading = false;
 
-    const articlesEl = document.getElementById("articles");
-    const sourceFilterEl = document.getElementById("source-filter");
-    const typeFilterEl = document.getElementById("type-filter");
-    const searchInputEl = document.getElementById("search-input");
-    const statusTextEl = document.getElementById("status-text");
-    const countPillEl = document.getElementById("count-pill");
-    const lastUpdatedEl = document.getElementById("last-updated");
-    const refreshBtnEl = document.getElementById("refresh-btn");
+    const sourceSelect = document.getElementById("sourceSelect");
+    const typeSelect = document.getElementById("typeSelect");
+    const searchInput = document.getElementById("searchInput");
+    const itemsWrapper = document.getElementById("itemsWrapper");
+    const emptyState = document.getElementById("emptyState");
+    const updatedDisplay = document.getElementById("updatedDisplay");
+    const countDisplay = document.getElementById("countDisplay");
+    const failedDisplay = document.getElementById("failedDisplay");
+    const refreshButton = document.getElementById("refreshButton");
+    const refreshSpinner = document.getElementById("refreshSpinner");
+    const badgeArticles = document.getElementById("badgeArticles");
+    const badgePodcasts = document.getElementById("badgePodcasts");
 
-    const isWebOrigin =
-      window.location.href.startsWith("http://") ||
-      window.location.href.startsWith("https://");
+    let showArticles = true;
+    let showPodcasts = true;
 
-    /***************
-     * HELPERS
-     ***************/
-    function formatDate(dateStr) {
-      if (!dateStr) return "";
-      const d = new Date(dateStr);
-      if (isNaN(d.getTime())) return "";
-      return d.toLocaleDateString(undefined, {
-        month: "short",
-        day: "numeric",
-        year: "numeric"
-      });
-    }
+    // ------------------------
+    // INIT
+    // ------------------------
+    initSourceSelect();
+    attachEvents();
+    loadAllFeeds();
 
-    function timeAgo(dateStr) {
-      if (!dateStr) return "";
-      const d = new Date(dateStr);
-      if (isNaN(d.getTime())) return "";
-      const now = new Date();
-      const diffMs = now - d;
-      const sec = Math.floor(diffMs / 1000);
-      const min = Math.floor(sec / 60);
-      const hr = Math.floor(min / 60);
-      const day = Math.floor(hr / 24);
-
-      if (day > 7) return "";
-      if (day >= 1) return day + (day === 1 ? " day ago" : " days ago");
-      if (hr >= 1) return hr + (hr === 1 ? " hour ago" : " hours ago");
-      if (min >= 1) return min + (min === 1 ? " min ago" : " mins ago");
-      return "Just now";
-    }
-
-    function sanitizeText(html) {
-      const div = document.createElement("div");
-      div.innerHTML = html;
-      return (div.textContent || div.innerText || "").trim();
-    }
-
-    function updateLastUpdated() {
-      const now = new Date();
-      lastUpdatedEl.textContent =
-        "Updated " +
-        now.toLocaleTimeString(undefined, {
-          hour: "numeric",
-          minute: "2-digit"
-        });
-    }
-
-    function buildSourceFilterOptions() {
-      FEEDS.forEach((feed) => {
+    function initSourceSelect() {
+      FEEDS.forEach(feed => {
         const opt = document.createElement("option");
         opt.value = feed.id;
         opt.textContent = feed.label;
-        sourceFilterEl.appendChild(opt);
+        sourceSelect.appendChild(opt);
       });
+      const allOpt = document.createElement("option");
+      allOpt.value = "all";
+      allOpt.textContent = "All sources";
+      sourceSelect.insertBefore(allOpt, sourceSelect.firstChild);
+      sourceSelect.value = "all";
     }
 
-    /***************
-     * FETCH + NORMALIZE
-     ***************/
-    async function fetchFeed(feed) {
+    function attachEvents() {
+      sourceSelect.addEventListener("change", renderFiltered);
+      typeSelect.addEventListener("change", renderFiltered);
+      searchInput.addEventListener("input", debounce(renderFiltered, 180));
+
+      refreshButton.addEventListener("click", () => {
+        loadAllFeeds(true);
+      });
+
+      badgeArticles.addEventListener("click", () => {
+        showArticles = !showArticles;
+        toggleBadgeActive(badgeArticles, showArticles);
+        renderFiltered();
+      });
+
+      badgePodcasts.addEventListener("click", () => {
+        showPodcasts = !showPodcasts;
+        toggleBadgeActive(badgePodcasts, showPodcasts);
+        renderFiltered();
+      });
+
+      toggleBadgeActive(badgeArticles, showArticles);
+      toggleBadgeActive(badgePodcasts, showPodcasts);
+    }
+
+    function toggleBadgeActive(el, isOn) {
+      if (isOn) {
+        el.style.opacity = "1";
+        el.style.border = "1px solid rgba(15,23,42,0.18)";
+      } else {
+        el.style.opacity = "0.4";
+        el.style.border = "1px dashed rgba(148,163,184,0.7)";
+      }
+    }
+
+    // ------------------------
+    // DATA LOADING
+    // ------------------------
+    async function loadAllFeeds(force) {
+      if (isLoading && !force) return;
+      isLoading = true;
+      allItems = [];
+      failedFeeds = [];
+      updateLoadingUI(true);
+
+      const promises = FEEDS.map(feed => loadFeed(feed));
+      await Promise.all(promises);
+
+      isLoading = false;
+      updateLoadingUI(false);
+      renderFiltered();
+      updateUpdatedTime();
+      updateFailedDisplay();
+    }
+
+    async function loadFeed(feed) {
+      const params = new URLSearchParams();
+      params.set("rss_url", feed.url);
+      if (RSS2JSON_API_KEY) {
+        params.set("api_key", RSS2JSON_API_KEY);
+      }
+
+      const url = RSS_PROXY_BASE + params.toString();
+
       try {
-        const url = RSS_PROXY + encodeURIComponent(feed.url);
         const res = await fetch(url);
         if (!res.ok) throw new Error("HTTP " + res.status);
         const data = await res.json();
-
-        if (data.status && data.status !== "ok") {
-          throw new Error(data.message || "Unknown API error");
+        if (data.status !== "ok" || !Array.isArray(data.items)) {
+          throw new Error("Bad RSS status");
         }
 
-        const items = (data.items || []).map((item) => {
-          const cleanDesc = sanitizeText(item.description || item.content || "");
-          return {
-            id: feed.id + "::" + (item.guid || item.link || item.title),
-            feedId: feed.id,
-            feedLabel: feed.label,
-            type: feed.defaultType,
-            title: item.title || "(No title)",
-            link: item.link || "#",
-            date: item.pubDate || item.pubdate || item.date || "",
-            snippet:
-              cleanDesc.slice(0, 260) +
-              (cleanDesc.length > 260 ? "…" : "")
-          };
-        });
-
-        return items;
+        const items = data.items.map(raw => normalizeItem(raw, feed));
+        allItems.push(...items);
       } catch (err) {
-        console.error("Error fetching feed", feed.label, err);
-        errorMessages.push(feed.label + ": " + err.message);
-        return [];
+        console.error("Feed failed:", feed.label, err);
+        failedFeeds.push(feed.label);
       }
     }
 
-    async function loadAllFeeds() {
-      if (!isWebOrigin) {
-        loading = false;
-        statusTextEl.innerHTML =
-          "<span class='status-error'>Feeds blocked:</span> This preview is being opened directly from a file (edge:// or file://). For security reasons, browsers do not allow local files to load live RSS data. Host this file on SharePoint, an intranet site, or any https:// web address to see live content.";
-        renderEmptyState();
-        return;
-      }
+    function normalizeItem(raw, feed) {
+      const published = raw.pubDate || raw.published || raw.date || null;
+      const date = published ? new Date(published) : null;
+      const textContent = (raw.description || raw.content || "")
+        .replace(/<[^>]+>/g, " ")
+        .replace(/\s+/g, " ")
+        .trim();
 
-      loading = true;
-      errorMessages = [];
-      statusTextEl.textContent = "Fetching feeds…";
-      articlesEl.innerHTML = "";
-      for (let i = 0; i < 3; i++) {
-        const sk = document.createElement("div");
-        sk.className = "skeleton";
-        articlesEl.appendChild(sk);
-      }
+      const mediaTags = detectMediaTags(raw, feed);
 
-      try {
-        const results = await Promise.all(FEEDS.map((f) => fetchFeed(f)));
-        allItems = results.flat();
-
-        // Sort newest first
-        allItems.sort((a, b) => {
-          const da = new Date(a.date).getTime() || 0;
-          const db = new Date(b.date).getTime() || 0;
-          return db - da;
-        });
-
-        loading = false;
-        applyFilters();
-        updateLastUpdated();
-
-        if (errorMessages.length) {
-          statusTextEl.innerHTML =
-            '<span class="status-error">Some feeds failed:</span> ' +
-            errorMessages.join(" · ");
-        } else {
-          statusTextEl.textContent = "All feeds loaded successfully.";
-        }
-      } catch (e) {
-        loading = false;
-        console.error(e);
-        statusTextEl.innerHTML =
-          '<span class="status-error">Error:</span> Unable to load feeds.';
-        renderEmptyState();
-      }
+      return {
+        id: feed.id + "::" + (raw.guid || raw.link || raw.title),
+        feedId: feed.id,
+        feedLabel: feed.label,
+        feedType: feed.type,
+        kind: feed.kind,
+        title: raw.title || "(Untitled)",
+        url: raw.link || raw.guid || "#",
+        isoDate: date ? date.toISOString() : null,
+        displayDate: date ? date.toLocaleDateString(undefined, {
+          month: "short",
+          day: "numeric"
+        }) : "No date",
+        snippet: textContent.slice(0, 240) + (textContent.length > 240 ? "…" : ""),
+        mediaTags
+      };
     }
 
-    /***************
-     * FILTERING + RENDER
-     ***************/
-    function applyFilters() {
-      const sourceVal = sourceFilterEl.value;
-      const typeVal = typeFilterEl.value;
-      const searchVal = (searchInputEl.value || "").toLowerCase();
+    function detectMediaTags(raw, feed) {
+      const tags = [];
+      const link = (raw.link || "").toLowerCase();
+      const enclosure = raw.enclosure || {};
 
-      filteredItems = allItems.filter((item) => {
-        if (sourceVal !== "all" && item.feedId !== sourceVal) return false;
-        if (typeVal !== "all" && item.type !== typeVal) return false;
+      const isAudio = feed.kind === "podcast" ||
+        (enclosure.type && typeof enclosure.type === "string" &&
+         enclosure.type.toLowerCase().startsWith("audio"));
 
-        if (searchVal) {
-          const haystack =
-            (item.title || "").toLowerCase() +
-            " " +
-            (item.snippet || "").toLowerCase();
-          if (!haystack.includes(searchVal)) return false;
-        }
+      if (isAudio) {
+        tags.push({ kind: "podcast", label: "Podcast / Audio" });
+      }
+
+      if (link.includes("spotify.com")) {
+        tags.push({ kind: "platform", label: "Spotify" });
+      }
+      if (link.includes("podcasts.apple.com") || link.includes("itunes.apple.com")) {
+        tags.push({ kind: "platform", label: "Apple Podcasts" });
+      }
+      if (link.includes("audible.com")) {
+        tags.push({ kind: "platform", label: "Audible" });
+      }
+      if (link.includes("music.amazon.") || link.includes("amazon.com")) {
+        tags.push({ kind: "platform", label: "Amazon" });
+      }
+
+      return tags;
+    }
+
+    // ------------------------
+    // RENDERING
+    // ------------------------
+    function renderFiltered() {
+      const sourceFilter = sourceSelect.value;
+      const typeFilter = typeSelect.value;
+      const q = searchInput.value.trim().toLowerCase();
+
+      let items = allItems.slice();
+
+      if (sourceFilter !== "all") {
+        items = items.filter(i => i.feedId === sourceFilter);
+      }
+
+      if (typeFilter !== "all") {
+        items = items.filter(i => i.feedType === typeFilter);
+      }
+
+      items = items.filter(i => {
+        const isPodcast = i.kind === "podcast";
+        if (!showArticles && !isPodcast) return false;
+        if (!showPodcasts && isPodcast) return false;
         return true;
       });
 
-      renderArticles();
-    }
-
-    function renderEmptyState() {
-      articlesEl.innerHTML = "";
-      const card = document.createElement("div");
-      card.className = "article-card";
-      card.innerHTML =
-        "<strong>Preview mode only.</strong><div class='article-snippet'>Layout and filters are ready. Move this file to a web address (SharePoint, intranet, or any https:// host) and the live industry content will populate automatically.</div>";
-      articlesEl.appendChild(card);
-      countPillEl.textContent = "0 items";
-    }
-
-    function renderArticles() {
-      articlesEl.innerHTML = "";
-
-      if (loading) {
-        for (let i = 0; i < 3; i++) {
-          const sk = document.createElement("div");
-          sk.className = "skeleton";
-          articlesEl.appendChild(sk);
-        }
-        return;
+      if (q) {
+        items = items.filter(i =>
+          i.title.toLowerCase().includes(q) ||
+          i.snippet.toLowerCase().includes(q) ||
+          i.feedLabel.toLowerCase().includes(q)
+        );
       }
 
-      if (!filteredItems.length) {
-        const empty = document.createElement("div");
-        empty.className = "article-card";
-        empty.innerHTML =
-          "<strong>No results.</strong><div class='article-snippet'>Try adjusting filters or search keywords.</div>";
-        articlesEl.appendChild(empty);
-        countPillEl.textContent = "0 items";
-        return;
-      }
-
-      filteredItems.forEach((item) => {
-        const card = document.createElement("article");
-        card.className = "article-card";
-
-        const top = document.createElement("div");
-        top.className = "article-top";
-
-        const source = document.createElement("div");
-        source.className = "article-source";
-        source.textContent = item.feedLabel;
-
-        const badge = document.createElement("div");
-        badge.className = "badge";
-        badge.innerHTML =
-          '<span class="badge-dot"></span><span>' + item.type + "</span>";
-
-        top.appendChild(source);
-        top.appendChild(badge);
-
-        const title = document.createElement("h3");
-        title.className = "article-title";
-        const link = document.createElement("a");
-        link.href = item.link;
-        link.target = "_blank";
-        link.rel = "noopener noreferrer";
-        link.textContent = item.title;
-        title.appendChild(link);
-
-        const meta = document.createElement("div");
-        meta.className = "article-meta";
-        const dateStr = formatDate(item.date);
-        const agoStr = timeAgo(item.date);
-        if (dateStr) {
-          const dateSpan = document.createElement("span");
-          dateSpan.textContent = dateStr;
-          meta.appendChild(dateSpan);
+      items.sort((a, b) => {
+        if (a.isoDate && b.isoDate) {
+          return b.isoDate.localeCompare(a.isoDate);
         }
-        if (dateStr && agoStr) {
-          const dot = document.createElement("div");
-          dot.className = "article-meta-dot";
-          meta.appendChild(dot);
-        }
-        if (agoStr) {
-          const agoSpan = document.createElement("span");
-          agoSpan.textContent = agoStr;
-          meta.appendChild(agoSpan);
-        }
-
-        const snippet = document.createElement("div");
-        snippet.className = "article-snippet";
-        snippet.textContent = item.snippet;
-
-        const actions = document.createElement("div");
-        actions.className = "article-actions";
-        const btn = document.createElement("button");
-        btn.className = "btn-link";
-        btn.type = "button";
-        btn.innerHTML = 'Open <span aria-hidden="true">↗</span>';
-        btn.addEventListener("click", () => {
-          window.open(item.link, "_blank", "noopener");
-        });
-        actions.appendChild(btn);
-
-        card.appendChild(top);
-        card.appendChild(title);
-        if (meta.childNodes.length) card.appendChild(meta);
-        card.appendChild(snippet);
-        card.appendChild(actions);
-
-        articlesEl.appendChild(card);
+        return (b.title || "").localeCompare(a.title || "");
       });
 
-      countPillEl.textContent = filteredItems.length + " items";
+      countDisplay.textContent = items.length.toString();
+      itemsWrapper.innerHTML = "";
+
+      if (items.length === 0) {
+        itemsWrapper.appendChild(emptyState);
+        emptyState.classList.remove("hidden");
+        return;
+      }
+
+      emptyState.classList.add("hidden");
+
+      for (const item of items) {
+        itemsWrapper.appendChild(renderItemCard(item));
+      }
     }
 
-    /***************
-     * EVENTS
-     ***************/
-    sourceFilterEl.addEventListener("change", applyFilters);
-    typeFilterEl.addEventListener("change", applyFilters);
-    searchInputEl.addEventListener("input", applyFilters);
-    refreshBtnEl.addEventListener("click", () => {
-      loadAllFeeds();
-    });
+    function renderItemCard(item) {
+      const card = document.createElement("article");
+      card.className = "item-card";
 
-    /***************
-     * INIT
-     ***************/
-    buildSourceFilterOptions();
-    loadAllFeeds();
+      const header = document.createElement("div");
+      header.className = "item-header";
+
+      const titleEl = document.createElement("h2");
+      titleEl.className = "item-title";
+      const link = document.createElement("a");
+      link.href = item.url;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      link.textContent = item.title;
+      titleEl.appendChild(link);
+
+      header.appendChild(titleEl);
+
+      const meta = document.createElement("div");
+      meta.className = "item-meta";
+
+      const dateSpan = document.createElement("span");
+      dateSpan.textContent = item.displayDate;
+      meta.appendChild(dateSpan);
+
+      const feedSpan = document.createElement("span");
+      feedSpan.textContent = item.feedLabel;
+      meta.appendChild(feedSpan);
+
+      const isPodcast = item.kind === "podcast";
+      const kindPill = document.createElement("span");
+      kindPill.className = "pill-small " + (isPodcast ? "podcast" : "");
+      kindPill.textContent = isPodcast ? "🎧 Podcast" : "Article";
+      meta.appendChild(kindPill);
+
+      if (Array.isArray(item.mediaTags) && item.mediaTags.length > 0) {
+        item.mediaTags.forEach(t => {
+          if (t.kind === "platform") {
+            const pill = document.createElement("span");
+            pill.className = "pill-small audio-platform";
+            pill.textContent = t.label;
+            meta.appendChild(pill);
+          }
+        });
+      }
+
+      const snippet = document.createElement("p");
+      snippet.className = "item-snippet";
+      snippet.textContent = item.snippet;
+
+      card.appendChild(header);
+      card.appendChild(meta);
+      card.appendChild(snippet);
+
+      return card;
+    }
+
+    function updateLoadingUI(loading) {
+      const label = updatedDisplay.querySelector("span:nth-child(2)");
+      if (loading) {
+        label.textContent = "Refreshing feeds…";
+        refreshSpinner.classList.remove("hidden");
+      } else {
+        refreshSpinner.classList.add("hidden");
+      }
+    }
+
+    function updateUpdatedTime() {
+      const label = updatedDisplay.querySelector("span:nth-child(2)");
+      const now = new Date();
+      const timeStr = now.toLocaleTimeString(undefined, {
+        hour: "numeric",
+        minute: "2-digit"
+      });
+      label.textContent = "Updated " + timeStr;
+    }
+
+    function updateFailedDisplay() {
+      if (failedFeeds.length === 0) {
+        failedDisplay.classList.add("hidden");
+        failedDisplay.textContent = "";
+        return;
+      }
+      failedDisplay.classList.remove("hidden");
+      failedDisplay.textContent =
+        "Some feeds failed: " + failedFeeds.join(" · ");
+    }
+
+    // ------------------------
+    // UTIL
+    // ------------------------
+    function debounce(fn, delay) {
+      let id;
+      return (...args) => {
+        clearTimeout(id);
+        id = setTimeout(() => fn(...args), delay);
+      };
+    }
   </script>
 </body>
 </html>
